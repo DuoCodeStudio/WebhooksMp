@@ -57,20 +57,22 @@ app.post('/webhook', async (req, res) => {
 
     // Atualiza o status do pagamento no Firestore no doc do usuário
     if (paymentData.status === 'rejected' || paymentData.status === 'cancelled') {
-      await updateDoc(doc(db, 'alunos', userId), {
-        pagamento: deleteField(),
-        formaPagamento: deleteField(),
-      });
+        await updateDoc(doc(db, 'pagamentos', paymentData.id.toString()), {
+          status: paymentData.status,
+          updatedAt: new Date()
+        });
     } else if (paymentData.status === 'approved') {
-      await updateDoc(doc(db, 'alunos', userId), {
-        pagamento: 'approved',
-      });
+        await updateDoc(doc(db, 'pagamentos', paymentData.id.toString()), {
+          status: 'approved',
+          updatedAt: new Date()
+        });
     } else if (paymentData.status === 'pending') {
-      await updateDoc(doc(db, 'alunos', userId), {
-        pagamento: paymentData.id,
-        formaPagamento: paymentData.payment_method_id,
-      });
+        await updateDoc(doc(db, 'pagamentos', paymentData.id.toString()), {
+          status: 'pending',
+          updatedAt: new Date()
+        });
     }
+
 
     console.log(`Status atualizado para o usuário ${userId}`);
     res.status(200).send('OK');
