@@ -56,7 +56,7 @@ app.post('/webhook', async (req, res) => {
     }
 
     // Atualiza o status do pagamento no Firestore no doc do usuário
-    if (paymentData.status === 'rejected') {
+    if (paymentData.status === 'rejected' || paymentData.status === 'cancelled') {
       await updateDoc(doc(db, 'alunos', userId), {
         pagamento: deleteField(),
       });
