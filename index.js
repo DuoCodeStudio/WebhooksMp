@@ -67,6 +67,7 @@ app.post('/webhook', async (req, res) => {
     } else if (paymentData.status === 'pending') {
       await updateDoc(doc(db, 'alunos', userId), {
         pagamento: paymentData.id,
+        formaPagamento: paymentData.payment_method_id,
       });
     }
 
