@@ -59,6 +59,7 @@ app.post('/webhook', async (req, res) => {
     if (paymentData.status === 'rejected' || paymentData.status === 'cancelled') {
       await updateDoc(doc(db, 'alunos', userId), {
         pagamento: deleteField(),
+        formaPagamento: deleteField(),
       });
     } else if (paymentData.status === 'approved') {
       await updateDoc(doc(db, 'alunos', userId), {
